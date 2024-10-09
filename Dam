@@ -1,0 +1,44 @@
+# Dynamo code for creating dam model with sliders for dimensions
+
+# Step 1: Create sliders for dimensions
+# The sliders allow dynamic input for dimensions of the dam
+TopLength = Slider("Top Length", 10, 20, 16)
+TopWidth = Slider("Top Width", 8, 12, 11)
+BottomLength = Slider("Bottom Length", 10, 16, 14)
+BottomWidth = Slider("Bottom Width", 7, 10, 9)
+Height = Slider("Height", 2, 3, 2.5)
+CrestWidth = Slider("Crest Width", 3, 4, 3.5)
+Freeboard = Slider("Freeboard", 0, 1, 0.5)
+
+# Step 2: Define bottom vertices (Z = 0)
+BottomLeft = Point.ByCoordinates(0, 0, 0)
+BottomRight = Point.ByCoordinates(BottomLength, 0, 0)
+BottomFront = Point.ByCoordinates(0, BottomWidth, 0)
+BottomBack = Point.ByCoordinates(BottomLength, BottomWidth, 0)
+
+# Step 3: Define top vertices (Z = Height)
+TopLeft = Point.ByCoordinates(-1, -1, Height)
+TopRight = Point.ByCoordinates(TopLength, -1, Height)
+TopFront = Point.ByCoordinates(-1, TopWidth, Height)
+TopBack = Point.ByCoordinates(TopLength, TopWidth, Height)
+
+# Step 4: Create lines to connect the bottom face
+BottomEdge1 = Line.ByStartPointEndPoint(BottomLeft, BottomRight)
+BottomEdge2 = Line.ByStartPointEndPoint(BottomRight, BottomBack)
+BottomEdge3 = Line.ByStartPointEndPoint(BottomBack, BottomFront)
+BottomEdge4 = Line.ByStartPointEndPoint(BottomFront, BottomLeft)
+
+# Step 5: Create lines to connect the top face
+TopEdge1 = Line.ByStartPointEndPoint(TopLeft, TopRight)
+TopEdge2 = Line.ByStartPointEndPoint(TopRight, TopBack)
+TopEdge3 = Line.ByStartPointEndPoint(TopBack, TopFront)
+TopEdge4 = Line.ByStartPointEndPoint(TopFront, TopLeft)
+
+# Step 6: Create side edges connecting the bottom and top
+Side1 = Line.ByStartPointEndPoint(BottomLeft, TopLeft)
+Side2 = Line.ByStartPointEndPoint(BottomRight, TopRight)
+Side3 = Line.ByStartPointEndPoint(BottomFront, TopFront)
+Side4 = Line.ByStartPointEndPoint(BottomBack, TopBack)
+
+# Step 7: Display everything in a Watch3D node for visualization
+Watch3D.View()
